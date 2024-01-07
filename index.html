@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE HTML&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">p {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size: 60px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-top: 0px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;!--&lt;input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="alert('test');"&gt;--&gt;</span></p>
+<p class="p1"><span class="s1">&lt;input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="stopTimer();storeValue('time_limit',String(5*60*60*1000));alert('Done');//location.reload();"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p id="demo"&gt;&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">// Set the date we're counting down to</span></p>
+<p class="p1"><span class="s1">var limit = Number(getStoredValue("time_limit"));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function myTimer() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>limit = Number(getStoredValue("time_limit"));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1">// <span class="Apple-converted-space">  </span>// Time calculations for days, hours, minutes and seconds</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>var hours = Math.floor(limit / (1000 * 60 * 60));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>var minutes = Math.floor((limit % (1000 * 60 * 60)) / (1000 * 60));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>var seconds = Math.floor((limit % (1000 * 60)) / 1000);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1">// <span class="Apple-converted-space">  </span>// Output the result in an element with id="demo"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById("demo").innerHTML = hours + "시 " + minutes + "분 " + seconds + "초 ";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// document.getElementById("demo").innerHTML = "test";</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">  </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>limit = limit - 1000;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>storeValue('time_limit', String(limit));</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Update the count down every 1 second</span></p>
+<p class="p1"><span class="s1">var x = setInterval(myTimer, 1000);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">var mode = getStoredValue('myPageMode');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function buttonClick(mode) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>mode = mode;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>storeValue('myPageMode', mode);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function storeValue(key, value) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (localStorage) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.setItem(key, value);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>$.cookies.set(key, value);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function getStoredValue(key) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (localStorage) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return localStorage.getItem(key);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return $.cookies.get(key);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function stopTimer()</span></p>
+<p class="p1"><span class="s1">{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (x !== -1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clearInterval(x);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>x = -1;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById("stopBtn").innerHTML = "다시시작";</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function startTimer()</span></p>
+<p class="p1"><span class="s1">{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (x === -1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>x = setInterval(myTimer, 1000);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById("stopBtn").innerHTML = "일시정지";</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function stopOrStart()<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1">{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (x !== -1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>stopTimer();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>startTimer();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p id="demo"&gt;&lt;button id="stopBtn" onclick = "stopOrStart();" &gt; 일시정지 &lt;/button&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
