@@ -39,7 +39,10 @@ window.onload = function() {
 function selectOnChange(obj) {
   timerMode = obj.value;
   storeValue('timerMode', obj.value); 
-  stopTimer();
+
+  if (timerMode == 'eden') {
+    stopTimer();
+  }
   buttonHideOrNot();
 } 
 
