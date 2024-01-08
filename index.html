@@ -33,30 +33,23 @@ async function myTimer() {
   var  limit = await getValueFromFB()
                       .then(time => {
                         console.log("second then : " + time);
-                        return time;
+                        // return time;
+
+                        if (time !== undefined) {
+                          var hours = Math.floor(time / (1000 * 60 * 60));
+                          var minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+                          var seconds = Math.floor((time % (1000 * 60)) / 1000);
+                            
+                          document.getElementById("demo").innerHTML = hours + "시 " + minutes + "분 " + seconds + "초 ";
+                          
+                          var newTime = time - 1000;
+                          setValueFromFB(newTime);
+                        }
                       })
                       .catch(error => {
                         console.error(error);
                       })
   console.log(limit);
-    
-//   // Time calculations for days, hours, minutes and seconds
-
-if (limit !== undefined) {
-  var hours = Math.floor(limit / (1000 * 60 * 60));
-  var minutes = Math.floor((limit % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((limit % (1000 * 60)) / 1000);
-    
-//   // Output the result in an element with id="demo"
-  document.getElementById("demo").innerHTML = hours + "시 " + minutes + "분 " + seconds + "초 ";
-
-    // document.getElementById("demo").innerHTML = "test";
-  
-  limit = limit - 1000;
-//   storeValue('time_limit', String(limit));
-
-    setValueFromFB(limit);
-}
 }
 
 // Update the count down every 1 second
@@ -176,13 +169,35 @@ function stopOrStart()
       
       // 데이터베이스 변수
       const database = firebase.database();
+
+      var versionNumber = database
+                          .ref('version/')
+                          .once('value')
+                          .then((snapshot) => { 
+                            var newNumber = snapshot.val().Number + 1;
+
+                            if (isNaN(newNumber) || typeof(newNumber) === undefined) {
+                              database.ref('version').set({
+                                  "Date": (new Date()).toLocaleString(),
+                                  "Number": 1,
+                                  "By": "MacLee"
+                              });
+                            }
+                            else {
+                              database.ref('version').set({
+                                  "Date": (new Date()).toLocaleString(),
+                                  "Number": newNumber,
+                                  "By": "MacLee"
+                              });
+                            }
+                          });
       
       // 데이터 저장
-      database.ref('students').set({
-          "full_name": "maclee5",
-          "age": 17,
-          "grade": "A"
-      });
+      // database.ref('version').set({
+      //     "Date": Date().toLocaleString(),
+      //     "Numbers": versionNumber,
+      //     "By": "MacLee"
+      // });
 
 </script>
 </body>
