@@ -12,18 +12,37 @@ p {
 </head>
 <body>
 <!--<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="alert('test');">-->
-<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="stopTimer();storeValue('time_limit',String(5*60*60*1000));alert('Done');//location.reload();">
+<!--<input type="button" style="color: black; background-color: transparent; border: solid;" onclick="stopTimer();storeValue('time_limit',String(5*60*60*1000));alert('Done');//location.reload();">-->
+<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="stopTimer();setValueFromFB(5*60*60*1000);alert('Done');//location.reload();">
 <p id="demo"></p>
 
 <script>
 // Set the date we're counting down to
-var limit = Number(getStoredValue("time_limit"));
+// var limit = Number(getStoredValue("time_limit"));
+// var limit = Number(getValueFromFB());
 
-function myTimer() {
+function writeUserData(value) {
+    database.ref('timer').set({
+      'time':value
+    });
+}
+
+async function myTimer() {
     
-    limit = Number(getStoredValue("time_limit"));
+    // limit = Number(getStoredValue("time_limit"));
+  var  limit = await getValueFromFB()
+                      .then(time => {
+                        console.log("second then : " + time);
+                        return time;
+                      })
+                      .catch(error => {
+                        console.error(error);
+                      })
+  console.log(limit);
     
 //   // Time calculations for days, hours, minutes and seconds
+
+if (limit !== undefined) {
   var hours = Math.floor(limit / (1000 * 60 * 60));
   var minutes = Math.floor((limit % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((limit % (1000 * 60)) / 1000);
@@ -34,7 +53,10 @@ function myTimer() {
     // document.getElementById("demo").innerHTML = "test";
   
   limit = limit - 1000;
-  storeValue('time_limit', String(limit));
+//   storeValue('time_limit', String(limit));
+
+    setValueFromFB(limit);
+}
 }
 
 // Update the count down every 1 second
@@ -61,6 +83,45 @@ function getStoredValue(key) {
     } else {
         return $.cookies.get(key);
     }
+}
+
+function setValueFromFB(value) {
+    writeUserData(value);
+}
+
+function getValueFromFB() {
+    // await database.ref('timer/').once('value', (snapshot) => {
+    //     const data = snapshot.val();
+    //     console.log("data : " + data)
+    //     var time = Number(data.time);
+    //     console.log("time : " + time);
+    //     // return time;
+    //     return new Promise((resolve, reject) => {
+    //       resolve(time);
+    //     });
+    //     // return time;
+    // })
+    // .then(time => {
+    //   return new Promise((resolve, reject) => {
+    //       console.log("first then : " + time);
+    //       console.log("typeof : " + typeof(time));
+    //       resolve(time);
+    //     });
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+
+    return database
+      .ref('timer/')
+      .once('value')
+      .then((snapshot) => {
+        var timeObject = snapshot.val();
+        var time = timeObject.time;
+        console.log("time : " + time);
+        return time;
+      });
+
 }
 
 function stopTimer()
@@ -91,5 +152,38 @@ function stopOrStart()
 
 </script>
 <p id="demo"><button id="stopBtn" onclick = "stopOrStart();" > 일시정지 </button></p>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAL5TE6yNcenon_U0FiBV2IJ62Pxmq4gKU",
+    authDomain: "edentimer-730bd.firebaseapp.com",
+    databaseURL: "https://edentimer-730bd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "edentimer-730bd",
+    storageBucket: "edentimer-730bd.appspot.com",
+    messagingSenderId: "1074927867238",
+    appId: "1:1074927867238:web:a336e81ccd3c8a6efba4a7",
+    measurementId: "G-C707S7LK59"
+  };
+  
+// Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      
+      // 데이터베이스 변수
+      const database = firebase.database();
+      
+      // 데이터 저장
+      database.ref('students').set({
+          "full_name": "maclee5",
+          "age": 17,
+          "grade": "A"
+      });
+
+</script>
 </body>
 </html>
