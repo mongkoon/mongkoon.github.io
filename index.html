@@ -34,6 +34,8 @@ window.onload = function() {
     }
   }
   buttonHideOrNot();
+
+  initTimer();
 }
 
 function selectOnChange(obj) {
@@ -52,12 +54,6 @@ function buttonHideOrNot() {
   }
 }
 
-function writeUserData(value) {
-    database.ref('timer').set({
-      'time':value
-    });
-}
-
 async function myTimer() {
     
   var limit = await getValueFromFB()
@@ -74,15 +70,28 @@ async function myTimer() {
                           
                           if (timerMode == 'eden') {
                             var newTime = time - 1000;
-                            setValueFromFB(newTime);
+                            setTimeValueToFB(newTime);
                           }
                         }
                       })
                       .catch(error => {
                         //console.error(error);
-                      })
+                      });
   //console.log(limit);
 }
+
+async function initTimer() {
+var isStop = getIsStopFromFB()
+                    .then(isStop => {
+                      if (isStop) {
+                        stopTimer();
+                      }
+                      else {
+                        startTimer();
+                      }
+                    })
+                    .catch();
+                  }
 
 // Update the count down every 1 second
 var x = setInterval(myTimer, 1000);
@@ -103,8 +112,16 @@ function getStoredValue(key) {
     }
 }
 
-function setValueFromFB(value) {
-    writeUserData(value);
+function setTimeValueToFB(value) {
+  database.ref('timer').set({
+      'time':value
+  });
+}
+
+function setIsStopToFB(isStop) {
+  database.ref('timerStop').set({
+      'isStop':isStop
+  });
 }
 
 
@@ -144,6 +161,18 @@ function getValueFromFB() {
 
 }
 
+function getIsStopFromFB() {
+  return database
+      .ref('timerStop/')
+      .once('value')
+      .then((snapshot) => {
+        var timeObject = snapshot.val();
+        var time = timeObject.isStop;
+        //console.log("time : " + time);
+        return time;
+      });
+}
+
 function stopTimer()
 {
   if (x !== -1) {
@@ -165,8 +194,10 @@ function stopOrStart()
 {
     if (x !== -1) {
         stopTimer();
+        setIsStopToFB(true);
     } else {
         startTimer();
+        setIsStopToFB(false);
     }
 }
 
@@ -176,7 +207,7 @@ function resetTimer() {
   }
 
   stopTimer();
-  setValueFromFB(5 * 60 * 60 * 1000);
+  setTimeValueToFB(5 * 60 * 60 * 1000);
   alert('Reset Done');
 }
 
