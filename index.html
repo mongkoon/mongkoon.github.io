@@ -39,10 +39,7 @@ window.onload = function() {
 function selectOnChange(obj) {
   timerMode = obj.value;
   storeValue('timerMode', obj.value); 
-
-  if (timerMode == 'eden') {
-    stopTimer();
-  }
+  stopTimer();
   buttonHideOrNot();
 } 
 
@@ -65,7 +62,7 @@ async function myTimer() {
     
   var limit = await getValueFromFB()
                       .then(time => {
-                        console.log("second then : " + time);
+                        //console.log("second then : " + time);
                         // return time;
 
                         if (time !== undefined) {
@@ -82,9 +79,9 @@ async function myTimer() {
                         }
                       })
                       .catch(error => {
-                        console.error(error);
+                        //console.error(error);
                       })
-  console.log(limit);
+  //console.log(limit);
 }
 
 // Update the count down every 1 second
@@ -115,9 +112,9 @@ function setValueFromFB(value) {
 function getValueFromFB() {
     // await database.ref('timer/').once('value', (snapshot) => {
     //     const data = snapshot.val();
-    //     console.log("data : " + data)
+    //     //console.log("data : " + data)
     //     var time = Number(data.time);
-    //     console.log("time : " + time);
+    //     //console.log("time : " + time);
     //     // return time;
     //     return new Promise((resolve, reject) => {
     //       resolve(time);
@@ -126,13 +123,13 @@ function getValueFromFB() {
     // })
     // .then(time => {
     //   return new Promise((resolve, reject) => {
-    //       console.log("first then : " + time);
-    //       console.log("typeof : " + typeof(time));
+    //       //console.log("first then : " + time);
+    //       //console.log("typeof : " + typeof(time));
     //       resolve(time);
     //     });
     // })
     // .catch(error => {
-    //   console.error(error);
+    //   //console.error(error);
     // });
 
     return database
@@ -141,7 +138,7 @@ function getValueFromFB() {
       .then((snapshot) => {
         var timeObject = snapshot.val();
         var time = timeObject.time;
-        console.log("time : " + time);
+        //console.log("time : " + time);
         return time;
       });
 
