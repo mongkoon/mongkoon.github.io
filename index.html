@@ -11,21 +11,46 @@ p {
 </style>
 </head>
 <body>
-<!--<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="alert('test');">-->
-<!--<input type="button" style="color: black; background-color: transparent; border: solid;" onclick="stopTimer();storeValue('time_limit',String(5*60*60*1000));alert('Done');//location.reload();">-->
-<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="stopTimer();setValueFromFB(5*60*60*1000);alert('Done');//location.reload();">
-<select name="dog-names" id="dog-names"> 
-  <option value="rigatoni">Rigatoni</option> 
-  <option value="dave">Dave</option> 
-  <option value="pumpernickel">Pumpernickel</option> 
-  <option value="reeses">Reeses</option> 
+<div style="display: flex; justify-content: flex-end">
+  <select name="timermodename" id="timermodeid" onchange="selectOnChange(this)">
+  <option value="default">기본모드</option> 
+  <option value="eden">든모드</option> 
+  <option value="sookyoo">엄빠모드</option> 
 </select>
+</div>
 <p id="demo"></p>
 
 <script>
-// Set the date we're counting down to
-// var limit = Number(getStoredValue("time_limit"));
-// var limit = Number(getValueFromFB());
+
+var timerMode = getStoredValue('timerMode');
+
+window.onload = function() {
+  var e = document.getElementById("timermodeid");
+
+  for (var cnt = 0; cnt < e.options.length; cnt++)
+  {
+    if (timerMode == e.options[cnt].value) {
+      e.options[cnt].selected = 1;
+    }
+  }
+  buttonHideOrNot();
+}
+
+function selectOnChange(obj) {
+  timerMode = obj.value;
+  storeValue('timerMode', obj.value); 
+  stopTimer();
+  buttonHideOrNot();
+} 
+
+function buttonHideOrNot() {
+  if (timerMode == 'eden') {
+    document.getElementById("stopBtn").hidden = false;
+  }
+  else {
+    document.getElementById("stopBtn").hidden = true;
+  }
+}
 
 function writeUserData(value) {
     database.ref('timer').set({
@@ -35,8 +60,7 @@ function writeUserData(value) {
 
 async function myTimer() {
     
-    // limit = Number(getStoredValue("time_limit"));
-  var  limit = await getValueFromFB()
+  var limit = await getValueFromFB()
                       .then(time => {
                         console.log("second then : " + time);
                         // return time;
@@ -48,8 +72,10 @@ async function myTimer() {
                             
                           document.getElementById("demo").innerHTML = hours + "시 " + minutes + "분 " + seconds + "초 ";
                           
-                          var newTime = time - 1000;
-                          setValueFromFB(newTime);
+                          if (timerMode == 'eden') {
+                            var newTime = time - 1000;
+                            setValueFromFB(newTime);
+                          }
                         }
                       })
                       .catch(error => {
@@ -60,13 +86,6 @@ async function myTimer() {
 
 // Update the count down every 1 second
 var x = setInterval(myTimer, 1000);
-
-var mode = getStoredValue('myPageMode');
-
-function buttonClick(mode) {
-    mode = mode;
-    storeValue('myPageMode', mode);
-}
 
 function storeValue(key, value) {
     if (localStorage) {
@@ -87,6 +106,8 @@ function getStoredValue(key) {
 function setValueFromFB(value) {
     writeUserData(value);
 }
+
+
 
 function getValueFromFB() {
     // await database.ref('timer/').once('value', (snapshot) => {
@@ -149,6 +170,16 @@ function stopOrStart()
     }
 }
 
+function resetTimer() {
+  if (timerMode != 'sookyoo') {
+    return;
+  }
+
+  stopTimer();
+  setValueFromFB(5 * 60 * 60 * 1000);
+  alert('Reset Done');
+}
+
 </script>
 <p id="demo"><button id="stopBtn" onclick = "stopOrStart();" > 일시정지 </button></p>
 
@@ -206,5 +237,6 @@ function stopOrStart()
       // });
 
 </script>
+<input type="button" style="color: transparent; background-color: transparent; border: solid;" onclick="resetTimer()">
 </body>
 </html>
